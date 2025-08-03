@@ -1,0 +1,73 @@
+mongodb atlas 
+email address--- backend.9developer@gmail.com
+
+username---  backenddeveloper
+password---- Fare@4567
+
+
+DIRECT LINK OF MONGO---->  https://cloud.mongodb.com/v2/685c14cdff036a1d2e35a718#/overview
+https://cloud.mongodb.com/user#/atlas/login
+-------------------------------------------------------
+mongodb+srv://backenddeveloper:Krishna@12@cluster0.07sfc6q.mongodb.net/
+
+========================
+MONGODB_URI=mongodb+srv://backenddeveloper:Krishna%4012@cluster0.07sfc6q.mongodb.net/googleflight?retryWrites=true&w=majority
+
+OR
+
+# MONGODB_URI=mongodb+srv://backenddeveloper:Krishna@12@cluster0.07sfc6q.mongodb.net/googleflight?retryWrites=true&w=majority
+
+
+----------------------
+mongoimport --uri "mongodb+srv://backenddeveloper:Krishna%4012@cluster0.07sfc6q.mongodb.net/googleflight" --collection deals --file "C:\Users\hp\Downloads\googleflight.deals.json" --jsonArray
+-----------------
+mongodb+srv://backenddeveloper:Krishna@12@cluster0.07sfc6q.mongodb.net/
+
+===========================RERSEND==========================================
+API KEY--->  re_GoP6bEq8_6oWGyZdLk24moZpv73Su2Dgp
+
+
+import { Resend } from 'resend';
+
+const resend = new Resend('re_GoP6bEq8_6oWGyZdLk24moZpv73Su2Dgp');
+
+resend.emails.send({
+  from: 'onboarding@resend.dev',
+  to: 'backend.9developer@gmail.com',
+  subject: 'Hello World',
+  html: '<p>Congrats on sending your <strong>first email</strong>!</p>'
+});
+================================GIT HUB====================
+https://github.com/backendKrishna/
+USERNAME-------backendKrishna
+PASSWORD-----  Farebuzzer@12
+
+=================================RESEND AND GO DADDY DNS===================================
+
+Domain----budgetcruisedeals.com
+
+✅ 1. MX Record (for receiving email)
+Type	Name	Priority	Value	                                        TTL
+MX	send	10	        feedback-smtp.ap-northeast-1.amazonses.com	Auto
+
+✅ 2. SPF Record (for sender authentication)
+Type	Name	Value	                                TTL
+TXT	send	v=spf1 include:amazonses.com ~all	Auto
+
+✅ 3. DKIM Record (email signing key)
+Type	Name	                Value	                                                        TTL
+TXT	resend._domainkey	p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCoT7yr9scfrXL+PPmPGbxuvKaihuWrNQ1+1zHh5/ajozfT6H1DBQYJxl1rYwgcmertNPELW4AA04Xdq49bhUlJqOmwWUtdxW7skT2NFeg2DhV7LkXLkLqzE9kZcDdJmonwIee4RuBJssEN/1KXX3KOQqryjwCULzlj8pK2gnR+1QIDAQAB	                                Auto
+
+✅ 4. DMARC Record (email protection policy)
+Type	Name	Value	                TTL
+TXT	_dmarc	v=DMARC1; p=none;	Auto
+
+=====================================RENDER DEPLOY================================
+
+https://dashboard.render.com/
+
+
+
+
+
+
