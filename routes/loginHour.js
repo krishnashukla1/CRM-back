@@ -10,6 +10,10 @@ router.post('/break/end', loginController.endBreak);
 
 router.get('/today/:employeeId', loginController.getTodayStats);
 
+
+router.get('/all', loginController.getAllLoginHours);
+
+
 module.exports = router;
 
 

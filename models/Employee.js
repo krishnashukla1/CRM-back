@@ -20,6 +20,12 @@ const employeeSchema = new mongoose.Schema({
   required: false // e.g. 30000
 },
 
+leaveQuota: {
+    type: Number,
+    default: 24, // Default annual leave quota
+    min: 1 // Ensure it's always positive
+  }
+
 
 
 }, { timestamps: true }); // ✅ important!);

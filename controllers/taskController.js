@@ -35,15 +35,68 @@ exports.getAllTasks = async (req, res) => {
 
 
 
+// exports.createTask = async (req, res) => {
+//   try {
+//     const newTask = new Task(req.body);
+//     await newTask.save();
+//     res.status(201).json(newTask);
+//   } catch (err) {
+//     res.status(400).json({ message: 'Failed to create task' });
+//   }
+// };
+
+
+// exports.createTask = async (req, res) => {
+//   try {
+//     const newTask = new Task(req.body);
+//     await newTask.save();
+
+//     // Use consistent response structure
+//     res.status(201).json({
+//       status: 'success',
+//       message: 'Task created successfully',
+//       data: newTask,
+//     });
+//   } catch (err) {
+//     res.status(400).json({
+//       status: 'error',
+//       message: 'Failed to create task',
+//       error: err.message,
+//     });
+//   }
+// };
+
+
 exports.createTask = async (req, res) => {
   try {
-    const newTask = new Task(req.body);
+    const { title, description, status, assignedTo, dueDate, priority } = req.body;
+
+    const newTask = new Task({
+      title,
+      description,
+      status,
+      assignedTo,
+      dueDate,
+      priority,
+      attachment: req.file ? `/uploads/tasks/${req.file.filename}` : null,
+    });
+
     await newTask.save();
-    res.status(201).json(newTask);
+
+    res.status(201).json({
+      status: 'success',
+      message: 'Task created successfully',
+      data: newTask,
+    });
   } catch (err) {
-    res.status(400).json({ message: 'Failed to create task' });
+    res.status(400).json({
+      status: 'error',
+      message: 'Failed to create task',
+      error: err.message,
+    });
   }
 };
+
 
 exports.updateTaskStatus = async (req, res) => {
   try {
@@ -55,3 +108,58 @@ exports.updateTaskStatus = async (req, res) => {
     res.status(400).json({ message: 'Failed to update task status' });
   }
 };
+
+// Update full task
+exports.updateTask = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const updateData = {
+      title: req.body.title,
+      description: req.body.description,
+      status: req.body.status,
+      assignedTo: req.body.assignedTo,
+      dueDate: req.body.dueDate,
+      priority: req.body.priority,
+    };
+
+    // If file is attached
+    if (req.file) {
+      updateData.attachment = `/uploads/tasks/${req.file.filename}`;
+    }
+
+    const updatedTask = await Task.findByIdAndUpdate(id, updateData, { new: true });
+
+    if (!updatedTask) {
+      return res.status(404).json({ status: 'error', message: 'Task not found' });
+    }
+
+    res.status(200).json({
+      status: 'success',
+      message: 'Task updated successfully',
+      data: updatedTask,
+    });
+  } catch (err) {
+    res.status(400).json({ status: 'error', message: 'Failed to update task', error: err.message });
+  }
+};
+
+// Delete task
+exports.deleteTask = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const deletedTask = await Task.findByIdAndDelete(id);
+
+    if (!deletedTask) {
+      return res.status(404).json({ status: 'error', message: 'Task not found' });
+    }
+
+    res.status(200).json({
+      status: 'success',
+      message: 'Task deleted successfully',
+      data: deletedTask,
+    });
+  } catch (err) {
+    res.status(400).json({ status: 'error', message: 'Failed to delete task', error: err.message });
+  }
+};
+

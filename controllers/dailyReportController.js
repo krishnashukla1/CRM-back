@@ -11,7 +11,7 @@ exports.sendDailyReport = async (req, res) => {
   try {
     const isTest = req.path.includes('/email-test');
     const summary = req.body.summary || {};
-    
+
     // Handle email recipient based on mode
     let email, employee;
 
@@ -30,12 +30,12 @@ exports.sendDailyReport = async (req, res) => {
       if (!req.body.employeeId) {
         return res.status(400).json({ error: "Employee ID is required" });
       }
-      
+
       employee = await Employee.findById(req.body.employeeId);
       if (!employee) {
         return res.status(404).json({ error: "Employee not found" });
       }
-      
+
       email = req.body.email || employee.email;
       if (!email) {
         return res.status(400).json({ error: "Email address is required" });
@@ -72,11 +72,10 @@ exports.sendDailyReport = async (req, res) => {
   <li>Rejections: ${summary.rejectionCount || 0}</li>
   <li>Profit Earned: ₹${summary.profitEarned || 0}</li>
   <li>Language Barrier Cases: ${summary.languageBarriers || 0}</li>
-  <li>Top No‑Sale Reasons: ${
-    summary.reasonBreakdown && Object.keys(summary.reasonBreakdown).length
-      ? Object.entries(summary.reasonBreakdown).map(([r, c]) => `${r} (${c})`).join(', ')
-      : 'None'
-  }</li>
+  <li>Top No‑Sale Reasons: ${summary.reasonBreakdown && Object.keys(summary.reasonBreakdown).length
+        ? Object.entries(summary.reasonBreakdown).map(([r, c]) => `${r} (${c})`).join(', ')
+        : 'None'
+      }</li>
 </ul>
 
 
@@ -84,12 +83,12 @@ exports.sendDailyReport = async (req, res) => {
         </div>
     
 
-        ${isTest ? '<div style="background-color: #ecfdf5; padding: 8px; margin-top: 20px; border-radius: 5px; color: #047857; text-align: center; font-size: 12px;">✅ This is an email of daily call log report details.</div>' :''}
+        ${isTest ? '<div style="background-color: #ecfdf5; padding: 8px; margin-top: 20px; border-radius: 5px; color: #047857; text-align: center; font-size: 12px;">✅ This is an email of daily call log report details.</div>' : ''}
 
       </div>
     `;
 
-// ${isTest ? '<div style="background-color: #fef2f2; padding: 10px; margin-top: 20px; border-radius: 5px; ////color: #dc2626; text-align: center;">TEST EMAIL - NOT A REAL REPORT</div>' : ''}
+    // ${isTest ? '<div style="background-color: #fef2f2; padding: 10px; margin-top: 20px; border-radius: 5px; ////color: #dc2626; text-align: center;">TEST EMAIL - NOT A REAL REPORT</div>' : ''}
 
 
     const textContent = `
@@ -141,7 +140,7 @@ exports.sendDailyReport = async (req, res) => {
     return res.status(500).json({
       status: "error",
       message: err.message || "Failed to process daily report",
-      ...(isTest && { 
+      ...(isTest && {
         hint: "Test emails must be sent to your verified Resend email address",
         solution: "Use backend.9developer@gmail.com for testing"
       })

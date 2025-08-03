@@ -7,7 +7,7 @@ const {
   getAllEmployees,
   addEmployee,
   upload,
-  uploadEmployeePhoto,getSalaryByMonth,updateEmployee,deleteEmployee
+  uploadEmployeePhoto,getSalaryByMonth,updateEmployee,deleteEmployee,updateLeaveQuota
 } = require("../controllers/employeeController");
 
 const { protect } = require("../middleware/authMiddleware");
@@ -37,5 +37,8 @@ router.get('/me', protect, async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 });
+
+router.patch('/:id/leave-quota', updateLeaveQuota);
+
 module.exports = router;
 

@@ -34,26 +34,35 @@ exports.register = async (req, res) => {
 
     // 4. Check if user already exists
     const normalizedEmail = email.toLowerCase();
-    const existingUser = await User.findOne({ email:normalizedEmail  });
+    const existingUser = await User.findOne({ email: normalizedEmail });
     if (existingUser) {
       return res.status(409).json({ message: 'User already exists with this email' });
     }
 
-   
+
 
     // 🛑 Check if an admin already exists
+    // if (role === 'admin') {
+    //   const existingAdmin = await User.findOne({ role: 'admin' });
+    //   if (existingAdmin) {
+    //     return res.status(403).json({ message: '❌ Admin already registered' });
+    //   }
+    // }
+
+    // 🛑 Check if more than 2 admins exist
     if (role === 'admin') {
-      const existingAdmin = await User.findOne({ role: 'admin' });
-      if (existingAdmin) {
-        return res.status(403).json({ message: '❌ Admin already registered' });
+      const adminCount = await User.countDocuments({ role: 'admin' });
+      if (adminCount >= 2) {
+        return res.status(403).json({ message: '❌ Maximum of 2 admins are allowed' });
       }
     }
+
 
     // 5. Hash the password
     const hashed = await bcrypt.hash(password, 10);
 
     // 6. Create User
-    const user = new User({ name, email:normalizedEmail , password: hashed, role });
+    const user = new User({ name, email: normalizedEmail, password: hashed, role });
     await user.save();
 
     // 7. Create Employee record if normal user
@@ -85,8 +94,8 @@ exports.login = async (req, res) => {
     }
 
     // 2. Find user
-   
-   const user = await User.findOne({ email: email.toLowerCase() }).lean();// use fresh DB query
+
+    const user = await User.findOne({ email: email.toLowerCase() }).lean();// use fresh DB query
 
     if (!user) return res.status(404).json({ message: 'User not found' });
 
@@ -95,7 +104,7 @@ exports.login = async (req, res) => {
     if (!isMatch) return res.status(401).json({ message: 'Invalid credentials' });
 
     // 4. Generate token
-    const token = jwt.sign({ userId: user._id, role: user.role,email: user.email }, JWT_SECRET, {
+    const token = jwt.sign({ userId: user._id, role: user.role, email: user.email }, JWT_SECRET, {
       expiresIn: '7d',
     });
 
@@ -112,5 +121,16 @@ exports.login = async (req, res) => {
   } catch (err) {
     console.error('❌ Login error:', err);
     res.status(500).json({ message: 'Login failed' });
+  }
+};
+
+
+exports.getAdminCount = async (req, res) => {
+  try {
+    const count = await User.countDocuments({ role: 'admin' });
+    res.status(200).json({ count });
+  } catch (err) {
+    console.error('Error counting admins:', err);
+    res.status(500).json({ message: 'Server error while counting admins' });
   }
 };

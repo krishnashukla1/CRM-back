@@ -38,6 +38,8 @@ const performanceRoutes = require('./routes/performanceRoutes');
 const loginRoutes = require('./routes/loginHour');
 const callLogs = require ('./routes/callLogs')
 const dailyReportRoutes = require('./routes/dailyReport')
+const weeklyOffRoutes = require('./routes/weeklyOffRoutes');
+
 
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
@@ -54,6 +56,8 @@ app.use('/api/performance', performanceRoutes);
 app.use('/api/hours', loginRoutes);
 app.use('/api/call-logs',callLogs);
 app.use('/api/daily-report', dailyReportRoutes);
+app.use('/api/weekly-offs', weeklyOffRoutes);
+
 
 app.get('/api/admin/data', protect, adminOnly, async (req, res) => {
   try {
